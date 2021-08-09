@@ -453,15 +453,15 @@ return new CustomBeanFactoryPostProcessor();
 
 ### ❓What is a BeanPostProcessor and how is it different to a BeanFactoryPostProcessor? What do they do? When are they called?
 
-🎯 **BeanPostProcessor** is an interface that allows you to create extensions to Spring Framework that will modify Spring Beans objects during initialization. 
+🎯**BeanPostProcessor** is an interface that allows you to create extensions to Spring Framework that will modify Spring Beans objects during initialization. 
 
-📋 This interface contains two methods
+📋This interface contains two methods
 
 * postProcessBeforeInitialization
 * postProcessAfterInitialization
 
 {% hint style="info" %}
-🧙♂ Implementing those methods allows you to modify created and assembled bean objects or even switch object that will represent the bean.
+🧙♂Implementing those methods allows you to modify created and assembled bean objects or even switch object that will represent the bean.
 {% endhint %}
 
 🎯 Main difference compared to BeanFactoryPostProcessor is that BeanFactoryPostProcessor works with Bean Definitions while BeanPostProcessor works with Bean Objects.
@@ -478,9 +478,9 @@ return new CustomBeanFactoryPostProcessor();
 8. **@Bean**\(initMethod\) method gets called
 9. **BeanPostProcessor**::**postProcessAfterInitialization** gets called
 
-### ❓ What is a BeanPostProcessor and how is it different to a BeanFactoryPostProcessor? What do they do? When are they called?
+### ❓What is a BeanPostProcessor and how is it different to a BeanFactoryPostProcessor? What do they do? When are they called?
 
-🎯 Recommended way to define **BeanPostProcessor** is through static @Bean method in Application Configuration. This is because **BeanPostProcessor** should be created early, before other Beans Objects are ready.
+🎯Recommended way to define **BeanPostProcessor** is through static @Bean method in Application Configuration. This is because **BeanPostProcessor** should be created early, before other Beans Objects are ready.
 
 ```java
 @Bean
@@ -490,12 +490,12 @@ return new CustomBeanPostProcessor();
 ```
 
 {% hint style="info" %}
-🧙♂ It is also possible to create BeanPostProcessor through regular registration in Application Configuration or through Component Scanning and @Component annotation, however because in that case bean can be created late in processes, recommended way is options provided above.
+🧙♂It is also possible to create BeanPostProcessor through regular registration in Application Configuration or through Component Scanning and @Component annotation, however because in that case bean can be created late in processes, recommended way is options provided above.
 {% endhint %}
 
-### ❓ What is an initialization method and how is it declared on a Spring bean?
+### ❓What is an initialization method and how is it declared on a Spring bean?
 
-🎯 Initialization method is a method that you can write for Spring Bean if you need to perform some initialization code that depends on properties and/or dependencies injected into Spring Bean.
+🎯Initialization method is a method that you can write for Spring Bean if you need to perform some initialization code that depends on properties and/or dependencies injected into Spring Bean.
 
 📋 You can declare Initialization method in three ways
 
@@ -503,32 +503,32 @@ return new CustomBeanPostProcessor();
 * Implement **InitializingBean**::**afterPropertiesSet**
 * Create Bean in Configuration class with **@Bean** method and use **@Bean\(initMethod\)**
 
-### ❓ What is a destroy method, how is it declared?
+### ❓What is a destroy method, how is it declared?
 
-🎯 Destroy method is a method in Spring Bean that you can use to implement any cleanup logic for resources used by the Bean. Method will be called when Spring Bean will be taken out of use, this is usually happening when Spring Context is closed.
+🎯Destroy method is a method in Spring Bean that you can use to implement any cleanup logic for resources used by the Bean. Method will be called when Spring Bean will be taken out of use, this is usually happening when Spring Context is closed.
 
-📋 You can declare destroy method in following ways
+📋You can declare destroy method in following ways
 
 * Create method annotated with **@PreDestroy** annotation
 * Implement **DisposableBean**::**destroy**
 * Create Bean in Configuration class with **@Bean** method and use **@Bean\(destroyMethod\)**
 
-### ❓ Consider how you enable JSR-250 annotations like @PostConstruct and @PreDestroy?
+### ❓Consider how you enable JSR-250 annotations like @PostConstruct and @PreDestroy?
 
-🎯 When using AnnotationConfigApplicationContext support for **@PostConstruct** and **@PreDestroy** is added automatically.
+🎯When using AnnotationConfigApplicationContext support for **@PostConstruct** and **@PreDestroy** is added automatically.
 
 {% hint style="info" %}
 🧙♂ Those annotations are handled by CommonAnnotationBeanPostProcessor with is automatically registered by AnnotationConfigApplicationContext.
 {% endhint %}
 
-### ❓ When/how will they \(initialization, destroy methods\) get called?
+### ❓When/how will they \(initialization, destroy methods\) get called?
 
 1Context is Created
 
 1. Beans Definitions are created based on Spring Bean Configuration
 2. **BeanFactoryPostProcessors** are invoked
 
-2 Bean is Created
+2Bean is Created
 
 1. Instance of Bean is Created
 2. Properties and Dependencies are set
@@ -538,15 +538,95 @@ return new CustomBeanPostProcessor();
 6. **@Bean\(initMethod\)** method gets called
 7. **BeanPostProcessor**::**postProcessAfterInitialization** gets called
 
-3 Bean is Ready to use
+3Bean is Ready to use
 
-4 Bean is Destroyed \(usually when context is closed\)
+4Bean is Destroyed \(usually when context is closed\)
 
 1. **@PreDestroy** method gets called
 2. **DisposableBean**::**destroy** method gets called
 3. **@Bean\(destroyMethod\)** method gets called
 
+## ❓Question15: What does component-scanning do?
 
+### 🎯Component Scanning
+
+Process in which Spring is scanning Classpath in search for classes annotated with stereotypes annotations \(@Component, @Repository, @Service, @Controller, …\) and based on those creates beans definitions.
+
+🎯Simple component scanning within Configuration package and all sub packages
+
+```java
+@ComponentScan
+public class ApplicationConfiguration {
+}
+```
+
+🎯Advanced Component Scanning Rules
+
+```java
+@ComponentScan(
+basePackages = "com.spring.professional.exam.tutorial.module01.question15.advanced.beans",
+includeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = ".*Bean"),
+excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = ".*(Controller|Service).*")
+)
+public class ApplicationConfiguration {
+}
+```
+
+## ❓Question16: What is the behavior of the annotation @Autowired with regards to field injection, constructor injection and method injection?
+
+**@Autowired** is an annotation that is processed by AutowiredAnnotationBeanPostProcessor, which can be put onto class constructor, field, setter method, or config method. Using this annotation enables automatic Spring Dependency Resolution that is primarily based on types.
+
+**@Autowired** has a property required which can be used to tell Spring if dependency is required or optional. By default, dependency is required. If **@Autowire**d with required dependency is used on top of constructor or method that contains multiple arguments, then all arguments are considered required dependency unless the argument is of type Optional, is marked as **@Nullable**, or is marked as **@Autowired\(required = false\)**.
+
+If @**Autowired** is used on top of Collection or Map then Spring will inject all beans matching the type into Collection and key-value pairs as BeanName-Bean into Map. Order of elements depends on the usage of **@Order**, **@Priority** annotations, and **implementation of the Ordered interface**.
+
+### 📋@Autowired uses the following steps when resolving the dependency
+
+1. Match exactly by type, if only one is found, finish.
+2. If multiple beans of the same type are found, check if any contains @Primary annotation, if yes, inject @Primary bean and finish.
+3. If no exactly one match exists, check if @Qualifier exists for the field, if yes use @Qualifier to find matching bean.
+4. If still no exactly one bean found, narrow the search by using bean name.
+5. If still no exactly one bean is found, throw an exception \(NoSuchBeanDefinitionException, NoUniqueBeanDefinitionException, …\).
+
+### 🎯@Autowired with field injection is used like this
+
+* Autowired fields can have any visibility level
+* The injection is happening after Bean is created but before any init method \(@PostConstruct, InitializingBean, @Bean\(init Method\)\) is called
+* By default field is required, however, you can use Optional, @Nullable, or @Autowired\(required = false\) to indicate that field is not required
+
+### 🎯@Autowired can be used with constructors like this
+
+```java
+@Autowired
+public RecordsService(DbRecordsReader recordsReader, DbRecordsProcessor recordsProcessor) {
+this.recordsReader = recordsReader;
+this.recordsProcessor = recordsProcessor;
+}
+```
+
+{% hint style="info" %}
+🧙♂Constructor can have any access modifier \(public, protected, private, package-private\).
+{% endhint %}
+
+If there is only one constructor in a class, there is no need to use @Autowired on top of it, Spring will use this default constructor anyway and will inject dependencies into it.
+
+If a class defines multiple constructors, then you are obligated to use @Autowired to tell Spring which constructor should be used to create Spring Bean. If you will have a class with multiple constructors without any of constructors marked as @Autowired then Spring will throw NoSuchMethodException.
+
+By default all arguments in constructors are required, however, you can use Optional, @Nullable, or @Autowired\(required = false\) to indicate that parameter is not required.
+
+### 🎯@Autowired can be used with method injection like this
+
+```java
+public void setRecordsReader(DbRecordsReader recordsReader) {
+this.recordsReader = recordsReader;
+}
+```
+
+**@Autowired** method can have any visibility level and also can contain multiple parameters. If the method contains multiple parameters, then by default it is assumed that in the @Autowired method all parameters are required. If Spring will be unable to resolve all dependencies for this method, NoSuchBeanDefinitionException or NoUniqueBeanDefinitionException will be thrown.
+
+When using **@Autowired\(required = false\)** with a method, it will be invoked only if Spring can resolve all parameters.
+
+If you want Spring to invoke the method only with arguments partially resolved, you need to use the @Autowired method with parameters marked as Optional, @Nullable, or @Autowired\(required = false\) to indicate that this parameter is not required.
 
 
 
