@@ -628,5 +628,26 @@ When using **@Autowired\(required = false\)** with a method, it will be invoked 
 
 If you want Spring to invoke the method only with arguments partially resolved, you need to use the @Autowired method with parameters marked as Optional, @Nullable, or @Autowired\(required = false\) to indicate that this parameter is not required.
 
+## ❓Question17: What do you have to do, if you would like to inject something into a private field? How does this impact testing?
 
+🎯Injection of dependency into private field can be done with @Autowired annotation
+
+```java
+@Autowired
+private ReportWriter reportWriter;
+```
+
+🎯 Injection of property into the private field can be done with @Value annotation
+
+```java
+@Value("${report.global.name}")
+private String reportGlobalName;
+```
+
+🎯 Private Field cannot be accessed from outside of the class, to resolve this when writing Unit Test you can use the following solutions
+
+* Use SpringRunner with ContextConfiguration and **@MockBean**
+* Use **ReflectionTestUtils** to modify private fields
+* Use **MockitoJUnitRunner** to inject mocks
+* Use **@TestPropertySource** to inject test properties into private fields
 
