@@ -793,5 +793,35 @@ Easiest way to observe that calls to original @Configuration class are proxied i
 * Changing set of Beans used in Development Environment and also during Testing Execution
 * Changing set of Beans in the system when monitoring or additional debugging capabilities should be turned on
 
+## ❓Question25: Can you use @Bean together with @Profile?
 
+Yes, @Bean annotation can be used together with @Profile inside class annotated with @Configuration annotation on top of method that returns instance of the bean.
+
+{% hint style="info" %}
+🧙♂If, method annotated with @Bean does not have @Profile, that beans that this bean will exists in all profiles.
+{% endhint %}
+
+You can specify one, multiple profiles, or profile in which bean should not exists
+
+```java
+@Profile("database")
+@Profile("!prod")
+@Profile({"database", "file"})
+```
+
+## ❓Question26: Can you use @Component together with @Profile?
+
+Yes, @Profile annotation can be used together with @Component on top of class representing spring bean.
+
+{% hint style="info" %}
+🧙♂If, class annotated with @Component does not have @Profile, that beans that this bean will exists in all profiles. 
+{% endhint %}
+
+You can specify one, multiple profiles, or profile in which bean should not exists
+
+```java
+@Profile("database")
+@Profile("!prod")
+@Profile({"database", "file"})
+```
 
