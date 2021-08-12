@@ -829,5 +829,3 @@ You can specify one, multiple profiles, or profile in which bean should not exis
 
 Spring Framework does not specify any explicit limit on number of profiles, however since some of the classes in Framework, like ActiveProfilesUtils used by default implementation of ActiveProfilesResolver are using array to iterate over profiles, this enforces inexplicit limit that is equal to maximum number of elements in array that you can have in Java, which is Integer.MAX\_VALUE - 2,147,483,647 \($$2^{32}  - 1$$\).
 
-
-
