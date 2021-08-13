@@ -829,3 +829,34 @@ You can specify one, multiple profiles, or profile in which bean should not exis
 
 Spring Framework does not specify any explicit limit on number of profiles, however since some of the classes in Framework, like ActiveProfilesUtils used by default implementation of ActiveProfilesResolver are using array to iterate over profiles, this enforces inexplicit limit that is equal to maximum number of elements in array that you can have in Java, which is Integer.MAX\_VALUE - 2,147,483,647 \($$2^{32}  - 1$$\).
 
+## ❓Question28: How do you inject scalar/literal values into Spring beans?
+
+🎯To inject scalar/literal values into Spring Beans, you need to use @Value annotation.
+
+🎯@Value annotation has one field value that accepts
+
+* Simple value
+* Property reference
+* SpEL String
+
+🎯@Value annotation can be used on top of
+
+* Field
+* Constructor Parameter
+* Method – all fields will have injected the same value
+* Method parameter – Injection will not be performed automatically if @Value is not present on method level or if @Autowired is not present at method level
+* Annotation type
+
+🎯Inside @Value you can specify
+
+* Simple value - @Value\("John"\), @Value\("true"\)
+* Reference a property - @Value\("${app.department.id}"\)
+* Perform SpEL inline computation - @Value\("\#{'Wall Street'.toUpperCase\(\)}"\), @Value\("\#{5000 \* 0.9}"\), @Value\("\#{'${app.department.id}'.toUpperCase\(\)}"\)
+* Inject values into array, list, set, map
+
+
+
+
+
+
+
