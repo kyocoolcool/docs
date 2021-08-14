@@ -854,9 +854,16 @@ Spring Framework does not specify any explicit limit on number of profiles, howe
 * Perform SpEL inline computation - @Value\("\#{'Wall Street'.toUpperCase\(\)}"\), @Value\("\#{5000 \* 0.9}"\), @Value\("\#{'${app.department.id}'.toUpperCase\(\)}"\)
 * Inject values into array, list, set, map
 
+## ❓Question29: What is @Value used for?
 
+### 🎯@Value is used for
 
-
+* Setting simple values of Spring Bean Fields, Method Parameters, Constructor Parameters
+* Injecting property/environment values into Spring Bean Fields, Method Parameters, Constructor Parameters
+* Injecting results of SpEL expressions into Spring Bean Fields, Method Parameters, Constructor Parameters
+* Injecting values from other Spring Beans into Spring Bean Fields, Method Parameters, Constructor Parameters
+* Injecting values into collections \(arrays, lists, sets, maps\) from literals, property/environment values, other Spring Beans
+* Setting default values of Spring Bean Fields, Method Parameters, Constructor Parameters when referenced value is missing
 
 
 
