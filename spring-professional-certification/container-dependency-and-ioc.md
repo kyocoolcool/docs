@@ -869,7 +869,7 @@ Spring Framework does not specify any explicit limit on number of profiles, howe
 
 Spring Expression Language \(SpEL\) is an expression language that allows you to query and manipulate objects graphs during the runtime. SpEL is used in different products across Spring portfolio.
 
-SpEL can be used independently with usage of ExpressionParser and EvaluationContext or can be used on top of fields, method parameters, constructor arguments via @Value annotation @Value\("\#{ … }"\).
+SpEL can be used independently with usage of **ExpressionParser** and **EvaluationContext** or can be used on top of fields, method parameters, constructor arguments via @Value annotation @Value\("\#{ … }"\).
 
 ### 🎯SpEL supported features
 
@@ -904,6 +904,32 @@ Compilation of Spring Expression is done by creating real Java Class that embodi
 * Expressions relying on the conversion service
 * Expressions using custom resolvers or accessors
 * Expressions using selection or projection
+
+## ❓Question31: What is the Environment abstraction in Spring?
+
+📋Environment Abstraction is part of Spring Container that models two key aspect of application environment
+
+* Profiles
+* Properties
+
+🎯Environment Abstraction is represent on code level by classes that implements Environment interface. This interface allows you to resolve properties and also to list profiles. You can receive reference to class that implements Environment by calling EnvironmentCapable class, implemented by ApplicationContext. Properties can also be retrieved by using @Value\("${…}"\) annotation.
+
+Environment Abstraction role in context of profiles is to determine which profiles are currently active, and which are activated by default.
+
+📋Environment Abstraction role in context of properties is to provide convenient, standarized and generic service that allows to resolve properties and also to configure property sources. Properties may come from following sources
+
+* Properties Files
+* JVM system properties
+* System Environment Variables
+* JNDI
+* Servlet Config
+* Servlet Context Parameters
+
+Default property sources for standalone applications are configured in StandardEnvironment, which includes JVM system properties and System Environment Variables. When running Spring Application in Servlet Environment, property sources will be configured based on StandardServletEnvironment, which additionally includes Servlet Config and Servlet Context Parameters, optionally it might include JndiPropertySource.
+
+{% hint style="info" %}
+🧙♂Too add additional properties files as property sources you can use @PropertySource annotation.
+{% endhint %}
 
 
 
