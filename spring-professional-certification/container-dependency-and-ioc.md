@@ -974,7 +974,25 @@ Default property sources for standalone applications are configured in StandardE
 * @PropertySource annotations on @Configuration classes
 * Default properties - SpringApplication.setDefaultProperties
 
+## ❓Question33: What can you reference using SpEL?
 
+📋You can reference following using SpEL
 
+* Static Fields from class - T\(com.example.Person\).DEFAULT\_NAME
+* Static Methods from class - T\(com.example.Person\).getDefaultName\(\)
+* Spring Bean Property - @person.name
+* Spring Bean Method - @person.getName\(\)
+* SpEL Variables - \#personName
+* Object property on reference assigned to SpEL variables - \#person.name
+* Object method on reference assigned to SpEL variables - \#person.getName\(\)
+* Spring Application Environment Properties - environment\['app.file.property’\]
+* System Properties - systemProperties\['app.vm.property'\]
+* System Environment Properties - systemEnvironment\['JAVA\_HOME'\]
 
+## ❓Question34: What is the difference between $ and \# in @Value expressions?
+
+📋@Value annotation supports two types of expressions
+
+* Expressions starting with $ - used to reference a property in Spring Environment Abstraction
+* Expressions starting with \# - SpEL expressions parsed and evaluated by SpEL
 
