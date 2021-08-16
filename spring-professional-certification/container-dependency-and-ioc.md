@@ -931,5 +931,50 @@ Default property sources for standalone applications are configured in StandardE
 🧙♂Too add additional properties files as property sources you can use @PropertySource annotation.
 {% endhint %}
 
+## ❓Question32: Where can properties in the environment come from – there are many sources for properties – check the documentation if not sure. Spring Boot adds even more.
+
+📋Property Sources in Spring Application vary based on type of applications that is being executed
+
+* Standalone Application
+* Servlet Container Application
+* Spring Boot Application
+
+📋Property Sources for Standalone Spring Framework Application
+
+* Properties Files
+* JVM system properties
+* System Environment Variables
+
+📋Property Sources for Servlet Container Spring Framework Application
+
+* Properties Files
+* JVM system properties
+* System Environment Variables
+* JNDI
+* ServletConfig init parameters
+* ServletContext init parameters
+
+📋Property Sources for Spring Boot Application
+
+* Devtools properties from ~/.spring-boot-devtools.properties \(when devtools is active\)
+* @TestPropertySource annotations on tests
+* Properties attribute in @SpringBootTest tests
+* Command line arguments
+* Properties from SPRING\_APPLICATION\_JSON property
+* ServletConfig init parameters
+* ServletContext init parameters
+* JNDI attributes from java:comp/env
+* JVM system properties
+* System Environment Variables
+* RandomValuePropertySource - ${random.\*}
+* application-{profile}.properties and YAML variants - outside of jar
+* application-{profile}.properties and YAML variants – inside jar
+* application.properties and YAML variants - outside of jar
+* application.properties and YAML variants - inside jar
+* @PropertySource annotations on @Configuration classes
+* Default properties - SpringApplication.setDefaultProperties
+
+
+
 
 
