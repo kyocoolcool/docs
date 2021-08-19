@@ -113,5 +113,24 @@ System.out.println("Before - this(CurrenciesRepositoryImpl)"); //Advice
 * Load Time Weaving – byte code is modified when classes are loaded by class loaders, during class loading aspects are applied, code is modified at join points matching pointcuts by applying advices
 * Runtime Weaving – used by Spring AOP, for each object/bean subject to aspects, proxy object is created \(JDK Proxy or CGLIB Proxy\), proxy objects are used instead of original object, at each join point matching pointcut, method invocation is changed to apply code from advice
 
+## ❓ Question3: How does Spring solve \(implement\) a cross cutting concern?
+
+Spring Implements cross-cutting concerns with the usage of Spring AOP module. Spring AOP uses AspectJ expression syntax for Pointcut expressions, which are matched against Join Point, code is altered with logic implemented in advices. In Spring AOP Joint Point is always method invocation.
+
+📋 Spring AOP uses Runtime Weaving, and for each type subject to aspects, to intercepts calls, spring creates one type of proxy
+
+* JDK Proxy – created for classes that implements interface
+* CGLIB Proxy – created for class that are not implementing any interface
+
+{% hint style="info" %}
+🧙♂ It is possible to force Spring to use CGLIB Proxy with usage of
+
+@EnableAspectJAutoProxy\(proxyTargetClass = true\)
+{% endhint %}
+
+![JDK Proxy](../.gitbook/assets/screen-shot-2021-08-19-at-1.37.48-pm.png)
+
+![CGLIB Proxy](../.gitbook/assets/screen-shot-2021-08-19-at-1.38.31-pm.png)
+
 
 
