@@ -156,5 +156,67 @@ Spring Implements cross-cutting concerns with the usage of Spring AOP module. Sp
 🧙♂ On top of requirement above, for call to be proxied, it needs to come from outside, both JDK Dynamic Proxy and CGLIB proxy does not support self-invocation.
 {% endhint %}
 
+## ❓ Question5: How many advice types does Spring support. Can you name each one? What are they used for? Which two advices can you use if you would like to try and catch exceptions?
 
+### 📋 Spring supports following advice types
+
+* @Before – executed before joint point matched by pointcut is executed
+* @After – executed after joint point matched by pointcut is executed
+* @AfterThrowing – executed when exception is thrown from joint point matched by pointcut
+* @AfterReturning – executed after joint point matched by pointcut is executed successfully without any exception
+* @Around – allows you to take full control over joint point matched by pointcut, most powerful advice, allows you to implement all advices from above, you need to call ProceedingJoinPoint::proceed\(\) to execute original code
+
+### 📋 Some examples of usage for each Advice type
+
+🧠 @Before
+
+* Authorization, Security
+* Logging
+* Data Validation
+
+🧠 @After
+
+* Logging
+* Resource Cleanup
+
+🧠 @AfterThrowing
+
+* Logging
+* Error Handling
+
+🧠 @AfterReturning
+
+* Logging
+* Data Validation for method result
+
+🧠 @Around
+
+* Transactions
+* Distributed Call Tracing
+* Authorization, Security
+
+📋 To catch exceptions you can use two advices
+
+* @AfterThrowing with throwing field set and exception passed as argument
+* @Around with try … catch block implemented
+
+## ❓ Question6: What do you have to do to enable the detection of the @Aspect annotation? What does @EnableAspectJAutoProxy do?
+
+📋 To enable detection of @Aspect annotation you need to
+
+🧠 Have @Configuration class with @EnableAspectJAutoProxy
+
+* Without @EnableAspectJAutoProxy Spring will not scan for @Aspect
+
+🧠 Have beans for @Aspect annotated classes created
+
+* Use @ComponentScan with @Component at class annotated with @Aspect
+* Use @Bean in Configuration class and create Spring Aspect Bean manually
+
+🧠 Have aspectjweaver/spring-aop on classpath
+
+* It is easiest to use org.springframework:spring-aspects dependency to have those included
+* Without required dependencies on classpath spring will fail with **ClassNotFoundException**/**NoClassDefFoundError** during creation of Proxy objects for Spring Beans subject to aspects
+
+Annotation **@EnableAspectJAutoProxy** enables detection of @Aspect classes and creates proxy object for beans subject to aspects. Internally process of creating proxies is done by **AnnotationAwareAspectJAutoProxyCreator**. By creating a proxy for each bean subject to aspects, spring intercepts the calls and implements Before / After / AfterReturning / AfterThrowing / Around advices. It is important to remember that @Aspect will not create Spring Beans on it’s own, you need to use Component Scanning or manually create beans for @Aspect classes.
 
