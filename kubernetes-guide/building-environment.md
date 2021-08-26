@@ -74,7 +74,7 @@ yum install docker
 🎯 Install Kubeadm, Kubelet, Kubectl
 
 {% hint style="info" %}
-🧙♂ worker node didn't need insall 
+🧙♂ worker node didn't need install 
 {% endhint %}
 
 ```bash
@@ -146,7 +146,7 @@ apiVersion: kubeadm.k8s.io/v1beta3
 kind: JoinConfiguration
 discovery:
   bootstrapToken:
-    apiServerEndpoint: 10.140.0.3:6443:6443
+    apiServerEndpoint: 10.140.0.3:6443
     token: pzfri9.g6ecr31em3gja1hm
     unsafeSkipCAVerification: true
   tlsBootstrapToken: pzfri9.g6ecr31em3gja1hm
