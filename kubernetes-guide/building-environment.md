@@ -49,7 +49,7 @@ setenforce 0
 sed -i 's/enforcing/disabled/' /etc/selinux/config
 ```
 
-🎯 Setting kubernetes repository
+🎯 Setting Kubernetes repository
 
 ```bash
 vi /etc/yum.repos.d/kubernetes.repo
@@ -74,7 +74,7 @@ yum install docker
 🎯 Install Kubeadm, Kubelet, Kubectl
 
 {% hint style="info" %}
-🧙♂ worker node didn't need install 
+🧙♂ worker node doesn't need  to install 
 {% endhint %}
 
 ```bash
@@ -157,6 +157,12 @@ discovery:
 
 ```bash
 kubeadm join --config=join-config.yaml
+```
+
+🎯 Install CNI Tool \(Master\)
+
+```bash
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 ```
 
 
