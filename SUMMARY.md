@@ -10,4 +10,5 @@
 ## Kubernetes Guide
 
 * [Building Environment](kubernetes-guide/building-environment.md)
+* [A Simple Application](kubernetes-guide/a-simple-application.md)
 
