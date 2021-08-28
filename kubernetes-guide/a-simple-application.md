@@ -78,7 +78,7 @@ spec:
         app: myweb
     spec:
       containers:
-      - name: myweb
+      - name: myweb:5.7.35
         image: kubeguide/tomcat-app:v1
         ports:
         - containerPort: 8080
