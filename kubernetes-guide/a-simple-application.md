@@ -116,5 +116,19 @@ spec:
 kubectl create -f myweb-svc.yaml
 ```
 
+## Connect to the Application
+
+​​ ⛏ Display expose port  of 8080 mapping to 30001
+
+![](../.gitbook/assets/screen-shot-2021-08-29-at-11.33.24-am.png)
+
+⛏ Use Browser connect to the application
+
+{% hint style="info" %}
+🧙♂ Connect IP is master external IP
+{% endhint %}
+
+![](../.gitbook/assets/screen-shot-2021-08-29-at-11.39.23-am.png)
+
 
 
