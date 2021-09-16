@@ -161,5 +161,59 @@ $ kubectl create configmap NAME --from-file=config-file-dir
 $ kubectl create configmap NAME --from-literal=key1=value1 --from-literal=key2=value2
 ```
 
+### 在Pod中使用ConfigMap
+
+🧠 ConfigMap設定key: value
+
+{% code title="cm-appvars.yaml" %}
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-appvars
+data:
+  apploglevel: info
+  appdatadir: /var/data
+```
+{% endcode %}
+
+```yaml
+$ kubectl apply -f cm-appvars.yaml
+```
+
+🧠 Pod將ConfigMap設定為環境變量
+
+{% code title="cm-test-pod-use-envvar.yaml" %}
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cm-test-pod
+spec:
+  containers:
+  - name: cm-test
+    image: busybox
+    command: [ "/bin/sh", "-c", "env | grep APP" ]
+    env:
+    - name: APPLOGLEVEL
+      valueFrom:
+        configMapKeyRef:
+          name: cm-appvars
+          key: apploglevel
+    - name: APPDATADIR
+      valueFrom:
+        configMapKeyRef:
+          name: cm-appvars
+          key: appdatadir
+  restartPolicy: Never
+```
+{% endcode %}
+
+```yaml
+$ kubectl apply -f cm-test-pod-use-envvar.yaml
+```
+
+查看該Pod log
+
 
 
