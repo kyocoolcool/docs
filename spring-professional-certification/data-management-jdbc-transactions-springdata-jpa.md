@@ -63,5 +63,35 @@ Unchecked exception – Exception that is extending java.lang.RuntimeException c
 
 ![DataAccessException hierarchy](../.gitbook/assets/screen-shot-2021-09-15-at-10.32.04-am.png)
 
+## ❓ Question2: How do you configure a DataSource in Spring? Which bean is very useful for development/test databases?
+
+Data Source is represented by generic interface javax.sql.DataSource that represents any data source for sql database.
+
+To configure data source in Spring you need to create a @Configuration class that will return javax.sql.DataSource bean.
+
+📋 You can use for example following types of javax.sql.DataSource
+
+* DriverManagerDataSource – basic JDBC driver connection source
+* BasicDataSource – Apache DBCP for Connection Pooling
+* ComboPooledDataSource - C3P0 for Connection Pool
+* SmartDataSource
+* AbstractDataSource
+* SingleConnectionDataSource
+* TransactionAwareDataSourceProxy
+* DataSourceTransactionManager
+
+🎯 Configuration of Data Source in Spring is dependent on the type of application that is executed
+
+📋 Type of execution
+
+* Standalone – Data Source is configured in @Configuration class and is created as a bean of one of supported data source types
+* Spring Boot – Data Source is configured through application.properties
+* Application Server – Data Source should be fetched from JNDI via JndiDataSourceLookup / JndiTemplate, application server is responsible for creating and managing data source requested in resources configurations of deployment descriptors
+
+📋 When working with development/test databases, following beans are very useful
+
+* EmbeddedDatabaseBuilder – allows to easily configure H2/HSQLDB embedded database with schema/data initialization scripts
+* DataSourceInitializer / ResourceDatabasePopulator – allows to use schema/data initialization scripts without usage of EmbeddedDatabaseBuilder
+
 
 

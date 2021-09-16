@@ -72,7 +72,7 @@ spec:
 
 ### 創建ConfigMap資源對象
 
-🎯 創建兩組key: value, apploglevel: info, appdatadir: /var/data.
+🎯 創建兩組key: value, apploglevel: info, appdatadir: /var/data
 
 ```yaml
 apiVersion: v1
