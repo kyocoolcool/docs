@@ -74,6 +74,7 @@ spec:
 
 🎯 創建兩組key: value, apploglevel: info, appdatadir: /var/data
 
+{% code title="cm-appvars.yaml" %}
 ```yaml
 apiVersion: v1
 kind: ConfigMap
@@ -83,9 +84,11 @@ data:
   apploglevel: info
   appdatadir: /var/data
 ```
+{% endcode %}
 
 🎯 以文件內容當作value
 
+{% code title="cm-appconfigfiles.yaml" %}
 ```yaml
 apiVersion: v1
 kind: ConfigMap
@@ -146,22 +149,25 @@ data:
     = INFO\r\norg.apache.catalina.core.ContainerBase.[Catalina].[localhost].[/host-manager].handlers
     = 4host-manager.org.apache.juli.FileHandler\r\n\r\n"
 ```
+{% endcode %}
 
 📋 kubectl命令創建ConfigMap
 
 * --from-file: 目錄下每個配置文件名都會被設置為key
 
 ```yaml
-$ kubectl create configmap NAME --from-file=config-file-dir
+kubectl create configmap NAME --from-file=config-file-dir
 ```
 
 * --from-literal: 直接指定key: value
 
 ```yaml
-$ kubectl create configmap NAME --from-literal=key1=value1 --from-literal=key2=value2
+kubectl create configmap NAME --from-literal=key1=value1 --from-literal=key2=value2
 ```
 
 ### 在Pod中使用ConfigMap
+
+ 1 通過環境變量方式使用ConfigMap
 
 🧠 ConfigMap設定key: value
 
@@ -178,10 +184,10 @@ data:
 {% endcode %}
 
 ```yaml
-$ kubectl apply -f cm-appvars.yaml
+kubectl apply -f cm-appvars.yaml
 ```
 
-🧠 Pod將ConfigMap設定為環境變量
+🎯Pod將ConfigMap設定為環境變量
 
 {% code title="cm-test-pod-use-envvar.yaml" %}
 ```yaml
@@ -210,10 +216,65 @@ spec:
 {% endcode %}
 
 ```yaml
-$ kubectl apply -f cm-test-pod-use-envvar.yaml
+kubectl apply -f cm-test-pod-use-envvar.yaml
 ```
 
 查看該Pod log
 
+```bash
+kubectl logs cm-test-pod
+```
 
+{% hint style="info" %}
+🧙♂進階用法透過envFrom, 將Config所有定義key: value自動生成環境變數 
+{% endhint %}
+
+{% code title="cm-test-pod-envfrom.yaml" %}
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cm-test-pod
+spec:
+  containers:
+  - name: cm-test
+    image: busybox
+    command: [ "/bin/sh", "-c", "env" ]
+    envFrom:
+    - configMapRef:
+        name: cm-appvars
+  restartPolicy: Never
+```
+{% endcode %}
+
+2 通過volumeMount使用ConfigMap
+
+通過`cm-appconfigfiles.yaml`將文件作為ConfigMap, 再將ConfigMap已文件形式mount到容器內
+
+{% code title="cm-test-pod-volume.yaml" %}
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cm-test-app
+spec:
+  containers:
+  - name: cm-test-app
+    image: kubeguide/tomcat-app:v1
+    ports:
+    - containerPort: 8080
+    volumeMounts:
+    - name: serverxml
+      mountPath: /configfiles
+  volumes:
+  - name: serverxml
+    configMap:
+      name: cm-appconfigfiles
+      items:
+      - key: key-serverxml
+        path: server.xml
+      - key: key-loggingproperties
+        path: logging.properties
+```
+{% endcode %}
 
